@@ -6,10 +6,6 @@ The engine can nest tags and fill in most attributes.
 
 As I need the functionality, I will develop the code.
 
-TODO:
-  Allow for nested sequential ID numbers. ID's are globally sequential.
-  Possibly create placeholders for data fusing. object fusing seems better?!..
-
 *EXAMPLES:*
 
 ```javascript
