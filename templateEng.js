@@ -21,52 +21,56 @@ function escapeText(s){
 //
 function recursiveOptions(obj,dd){
   var base = '';
+  var o,start,end,tail;
   // could be an array or object
   if(obj != null && typeof obj == 'object' && obj.temp)
-    var o = obj.temp;
+    o = obj.temp;
   else 
-    var o = obj;
+    o = obj;
   for (var k in o){
     var kk = o[k];
     // t: will assign the building blocks
     switch(kk.t){
       case 'd':
-        var start='<div',tail = '>',end = '</div>';
+        start='<div';tail = '>';end = '</div>';
         break;
       case 'i':
-        var start='<input',tail = '>',end = '';
+        start='<input';tail = '>';end = '';
         break;
       case 'img':
-        var start='<img',tail='>',end='';
+        start='<img';tail='>';end='';
         break;
       case 'form':
-        var start='<form',tail='>',end='</form>';
+        start='<form';tail='>';end='</form>';
         break;
       case 'tx':
-        var start='<textarea',tail='>',end='</textarea>';
+        start='<textarea';tail='>';end='</textarea>';
         break;
       case 'a':
-        var start='<a',tail='>',end='</a>';
+        start='<a';tail='>';end='</a>';
         break;
     }
     // Ternary Aviary
     base += start;
-    kk.type ? base += ' type="'+kk.type+'"' : '';
-    kk.action ? base += ' action="'+kk.action+'"' : '';
-    kk.href ? base += ' href="'+kk.href+'"' : '';
-    kk.src ? base += ' src="'+kk.src+'"' : '';
-    kk.alt ? base += ' alt="'+kk.alt+'"' : '';
-    (kk.hw || (kk.height && kk.width)) 
-      ? base += ' height="'+kk.hw+'" width="'+kk.hw+'"' 
-      : '';
-    dd ? base += ' id="'+kk.id+(dd++)+'"' : base += ' id="'+kk.id+'"';
-    kk.cls ? base += ' class="'+kk.cls+'"' : '';
-    kk.nm ? base += ' name="'+kk.nm+'"' : '';
-    kk.vl ? base += ' value="'+kk.vl+'"' : '';
+    base += (kk.type) ? ' type="'+kk.type+'"' : '';
+    base += (kk.style) ? ' style="'+kk.style+'"' : '';
+    base += (kk.action) ? ' action="'+kk.action+'"' : '';
+    base += (kk.href) ? ' href="'+kk.href+'"' : '';
+    base += (kk.src) ? ' src="'+kk.src+'"' : '';
+    base += (kk.alt) ? ' alt="'+kk.alt+'"' : '';
+    base += (kk.hw || (kk.height && kk.width)) ? 
+              ' height="'+(kk.hw ? kk.hw : kk.height)+
+              '" width="'+(kk.hw ? kk.hw : kk.width)+'"' : '';
+    base += (kk.id) ? ' id="'+kk.id+(dd ? dd++ : '')+'"' : '';
+    base += (kk.cls) ? ' class="'+kk.cls+'"' : '';
+    base += (kk.nm) ? ' name="'+kk.nm+'"' : '';
+    base += (kk.vl) ? ' value="'+kk.vl+'"' : '';
+    base += (kk.sz) ? ' size="'+kk.sz+'"' : '';
+    base += (kk.placeholder) ? ' placeholder="'+kk.placeholder+'"' : '';
     base += tail;
-    kk.con ? base += ''+kk.con+'' : '';
+    base += (kk.con) ? ''+kk.con+'' : '';
     // Now it gets hairy..
-    kk.n ? base += recursiveOptions(kk.n,dd) : '';
+    base += (kk.n) ? recursiveOptions(kk.n,dd) : '';
     base += end;
   }/*end for obj*/
   return base;
@@ -83,19 +87,19 @@ var TemplateEngine = function(html, options) {
       code = 'var r=[];\n', cursor = 0, match;
     var add = function(line, js) {
       // add HTML fragments and code
-      js ? (code += line.match(reExp) 
-          ? line + '\n' 
-          : 'r.push(escapeText(' + line + '));\n') 
-        : (code += line != '' 
-            ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' 
-            : '');return add;}// end add
-    while(match = re.exec(html)) {
+      code += (js) ? ((line.match(reExp)) ? 
+          line + '\n' : 
+          'r.push(escapeText(' + line + '));\n') : 
+        ((line != '') ? 
+         'r.push("' + line.replace(/"/g, '\\"') + '");\n' : 
+         '');return add;};// end add
+    while((match = re.exec(html))) {
       add(html.slice(cursor, match.index))(match[1], true);
       cursor = re.lastIndex;}
     add(html.substr(cursor, html.length - cursor));
     code += 'return r.join("");';
     // concat the HTML fragment array in a returned function.
     // apply the options object as this
-    return new Function(code).apply(options);
+    return Function(code).apply(options);
   }// end main
-}// end TemplateEngine
+};// end TemplateEngine
