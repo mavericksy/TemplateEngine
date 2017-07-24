@@ -50,6 +50,7 @@ function recursiveOptions(obj,dd){
         start='<a';tail='>';end='</a>';
         break;
     }
+
     // Ternary Aviary
     base += start;
     base += (kk.type) ? ' type="'+kk.type+'"' : '';
@@ -61,7 +62,7 @@ function recursiveOptions(obj,dd){
     base += (kk.hw || (kk.height && kk.width)) ? 
               ' height="'+(kk.hw ? kk.hw : kk.height)+
               '" width="'+(kk.hw ? kk.hw : kk.width)+'"' : '';
-    base += (kk.id) ? ' id="'+kk.id+(dd ? dd++ : '')+'"' : '';
+    base += (kk.id) ? ' id="'+kk.id+((dd) ? dd++ : '')+'"' : '';
     base += (kk.cls) ? ' class="'+kk.cls+'"' : '';
     base += (kk.nm) ? ' name="'+kk.nm+'"' : '';
     base += (kk.vl) ? ' value="'+kk.vl+'"' : '';
@@ -81,16 +82,21 @@ var TemplateEngine = function(html, options) {
     return '';
   } else {
     // can embed code in the template
+    // between <% [code] %> tags.
     var re = /<%(.+?)%>/g,
-    // only run the cde that starts like this..
+    // only run the code that starts like this..
       reExp = /(^\s*(r*\W|con\W|var\W|if\W|for\W|else\W|switch\W|case\W|break\W|{|})).*/g, 
       code = 'var r=[];\n', cursor = 0, match;
     var add = function(line, js) {
       // add HTML fragments and code
+      // if the line matched with <% %>
+      // then add to function executable
       code += (js) ? ((line.match(reExp)) ? 
           line + '\n' : 
+          // else add to array. re and reExp matching fault.
           'r.push(escapeText(' + line + '));\n') : 
-        ((line != '') ? 
+        ((line != '') ?
+         // if not js code else escape the tag quotes and add to array.
          'r.push("' + line.replace(/"/g, '\\"') + '");\n' : 
          '');return add;};// end add
     while((match = re.exec(html))) {
@@ -98,8 +104,9 @@ var TemplateEngine = function(html, options) {
       cursor = re.lastIndex;}
     add(html.substr(cursor, html.length - cursor));
     code += 'return r.join("");';
-    // concat the HTML fragment array in a returned function.
-    // apply the options object as this
+    // concat the HTML fragment array.
+    // apply the options object as this.
+    // and run all relevant code that was added.
     return Function(code).apply(options);
   }// end main
 };// end TemplateEngine
