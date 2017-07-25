@@ -24,7 +24,7 @@ function recursiveOptions(obj,dd){
   var base = '';
   var start,end,tail;
   for (var k in obj){
-    var kk = o[k];
+    var kk = obj[k];
     // t: will assign the building blocks
     switch(kk.t){
       case 'd':
