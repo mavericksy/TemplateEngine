@@ -9,24 +9,24 @@ As I need the functionality, I will develop the code.
 *EXAMPLES:*
 
 ```javascript
- var code = '<%r.push(recursiveOptions(this,"1"))%>';
+ var code = '<%r.push(recursiveOptions(this.temp,"1"))%>';
  var temp = {"temp":[
-              {"t":"i","type":"button","id":"HELLO","cls":"HELLO","vl":"HELLO"}
+              {"t":"i","type":"button","id":"HELLO","class":"HELLO","value":"HELLO"}
             ]};
             
  TemplateEngine(code, temp);
  => Output: <input type="button" id="HELLO1" class="HELLO" value="HELLO">
 
 
-var code = '<%r.push(recursiveOptions(this,"1"))%>';
+var code = '<%r.push(recursiveOptions(this.temp,"1"))%>';
 var template = {
   temp : [
   // Div with content..
     {t:'d',id:'div',con:'This is div1',n:[
     // with nested form with input and button
       {t:'form',id:'form',n:[
-        {t:'i',id:'text',type:'input',nm:'input1',vl:''},
-        {t:'i',id:'button',type:'button',nm:'button1',vl:'BUTTON!'}
+        {t:'i',id:'text',type:'input',name:'input1',value:''},
+        {t:'i',id:'button',type:'button',name:'button1',value:'BUTTON!'}
       ]}
     ]}
   ]
