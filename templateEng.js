@@ -57,8 +57,7 @@ function recursiveOptions(obj,dd){
     var a = $.makeArray(kk);
     kk = a[0];
     $.map(kk,function(val,key){
-      if(key=='con'||key=='n'||key=='t'){key=null;val=null;}
-      if(key != null && val != null){
+      if(!(key=='con'||key=='n'||key=='t')){
         base += (key=='id') ? ' '+key+'="'+val+inc()+'"' : 
           ' '+key+'="'+val+'"' ;
       }
