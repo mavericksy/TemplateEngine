@@ -20,13 +20,9 @@ function escapeText(s){
 //Build me some HTML.
 //
 function recursiveOptions(obj,dd){
+  if(obj === null || obj === undefined || obj === false || Object.keys(obj).length === 0) return '';
   var base = '';
-  var o,start,end,tail;
-  // could be an array or object
-  if(obj != null && typeof obj == 'object' && obj.temp)
-    o = obj.temp;
-  else 
-    o = obj;
+  var start,end,tail,o = obj;
   for (var k in o){
     var kk = o[k];
     // t: will assign the building blocks
@@ -51,23 +47,23 @@ function recursiveOptions(obj,dd){
         break;
     }
 
-    // Ternary Aviary
+    var inc = function(){
+      if(dd) return dd++;
+      else return '';
+    };
+
+    // Map the objects to the tags
     base += start;
-    base += (kk.type) ? ' type="'+kk.type+'"' : '';
-    base += (kk.style) ? ' style="'+kk.style+'"' : '';
-    base += (kk.action) ? ' action="'+kk.action+'"' : '';
-    base += (kk.href) ? ' href="'+kk.href+'"' : '';
-    base += (kk.src) ? ' src="'+kk.src+'"' : '';
-    base += (kk.alt) ? ' alt="'+kk.alt+'"' : '';
-    base += (kk.hw || (kk.height && kk.width)) ? 
-              ' height="'+(kk.hw ? kk.hw : kk.height)+
-              '" width="'+(kk.hw ? kk.hw : kk.width)+'"' : '';
-    base += (kk.id) ? ' id="'+kk.id+((dd) ? dd++ : '')+'"' : '';
-    base += (kk.cls) ? ' class="'+kk.cls+'"' : '';
-    base += (kk.nm) ? ' name="'+kk.nm+'"' : '';
-    base += (kk.vl) ? ' value="'+kk.vl+'"' : '';
-    base += (kk.sz) ? ' size="'+kk.sz+'"' : '';
-    base += (kk.placeholder) ? ' placeholder="'+kk.placeholder+'"' : '';
+    var a = $.makeArray(kk);
+    kk = a[0];
+    $.map(kk,function(val,key){
+      var r={};
+      if(key=='con'||key=='n'||key=='t'){key=null;val=null;}
+      if(key != null && val != null){
+        base += (key=='id') ? ' '+key+'="'+val+inc()+'"' : 
+          ' '+key+'="'+val+'"' ;
+      }
+    });
     base += tail;
     base += (kk.con) ? ''+kk.con+'' : '';
     // Now it gets hairy..
@@ -85,12 +81,12 @@ var TemplateEngine = function(html, options) {
     // between <% [code] %> tags.
     var re = /<%(.+?)%>/g,
     // only run the code that starts like this..
-      reExp = /(^\s*(r*\W|con\W|var\W|if\W|for\W|else\W|switch\W|case\W|break\W|{|})).*/g, 
-      code = 'var r=[];\n', cursor = 0, match;
+    reExp = /(^\s*(r*\W|con\W|var\W|if\W|for\W|else\W|switch\W|case\W|break\W|{|})).*/g, 
+    code = 'var r=[];\n', cursor = 0, match;
     var add = function(line, js) {
-      // add HTML fragments and code
+      // add HTML fragments and code.
       // if the line matched with <% %>
-      // then add to function executable
+      //+then add to function executable
       code += (js) ? ((line.match(reExp)) ? 
           line + '\n' : 
           // else add to array. re and reExp matching fault.
@@ -105,8 +101,8 @@ var TemplateEngine = function(html, options) {
     add(html.substr(cursor, html.length - cursor));
     code += 'return r.join("");';
     // concat the HTML fragment array.
-    // apply the options object as this.
-    // and run all relevant code that was added.
+    // apply the options object as this
+    //+and run all code that was added.
     return Function(code).apply(options);
   }// end main
 };// end TemplateEngine
