@@ -22,8 +22,8 @@ function escapeText(s){
 function recursiveOptions(obj,dd){
   if(obj === null || obj === undefined || obj === false || Object.keys(obj).length === 0) return '';
   var base = '';
-  var start,end,tail,o = obj;
-  for (var k in o){
+  var start,end,tail;
+  for (var k in obj){
     var kk = o[k];
     // t: will assign the building blocks
     switch(kk.t){
@@ -57,7 +57,6 @@ function recursiveOptions(obj,dd){
     var a = $.makeArray(kk);
     kk = a[0];
     $.map(kk,function(val,key){
-      var r={};
       if(key=='con'||key=='n'||key=='t'){key=null;val=null;}
       if(key != null && val != null){
         base += (key=='id') ? ' '+key+'="'+val+inc()+'"' : 
