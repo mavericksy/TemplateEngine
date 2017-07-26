@@ -6,6 +6,25 @@ The engine can nest tags and fill in most attributes.
 
 As I need the functionality, I will develop the code.
 
+**USAGE:**
+
+The engine works like this:
+ A variable holding an object with a temp property filled with objects that represent HTML tags, 
+ is fed to a recursive function that builds the html tags and nests the relevant children.
+ 
+ The object of objects take the form of ``var temp = {temp:[{'t':'','id':'',...},{...}]}`` etc...
+ 
+ The 't' property in each object is mandatory as it identifies the tag to be used during the build.
+ An id, while not mandatory, is the best way to mark tags for JQuery manipulation or for CSS.
+ 
+ All other HTML attributes can be added to the object which represents the tag, and the engine will fill those in as written. So care must be taken when creating tag objects as they are verbatim to what the engine will create.
+ 
+ The temp variable, holding the objects, is fed to a recursive function that is then returned from the template engine and eval'ed to create the actual HTML.
+ 
+ The code to run the template looks like this: ``var code = '<%r.push(recursiveOptions(this.temp))%>'``
+ An optional second argument is used to create sequential ID's for the id attribute value of each tag.
+ ie. ``var code = '<%r.push(recursiveOptions(this.temp, "0"))%>'`` would ensure the first tag met with an ID will have a zero appended to the ID attribute value.. id="someID0", followed by id="someID1" in the next tag met by the engine.
+
 *EXAMPLES:*
 
 ```javascript
