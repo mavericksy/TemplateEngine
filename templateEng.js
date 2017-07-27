@@ -47,7 +47,7 @@ function getBlob(kk){
 function recursiveOptions(obj,dd){
   if(obj === null || obj === undefined || obj === false || Object.keys(obj).length === 0) return '';
   var base = '';
-  var blob,start,end,tail;
+  var blob;
   for (var k in obj){
     var kk = obj[k];
     // t: will assign the building blocks
