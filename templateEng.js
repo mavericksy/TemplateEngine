@@ -34,7 +34,7 @@ function getBlob(kk){
       default:
         return undefined;
     }
-    return {start:s,tail:t,end:e}
+    return {start:s,tail:t,end:e};
 }
 
 // Oh recursion you beauty!
@@ -49,6 +49,7 @@ function recursiveOptions(obj,dd){
   var base = '';
   var blob;
   for (var k in obj){
+
     var kk = obj[k];
     // t: will assign the building blocks
     if(!(blob = getBlob(kk.t))) return '';
@@ -56,17 +57,18 @@ function recursiveOptions(obj,dd){
     var inc = function(){
       if(dd) return dd++;
       else return '';
-    };
+    };// end inc()
+
     // Map the objects to the tags
     base += blob.start;
-    
+
     $.map(kk,function(val,key){
       if(!(key=='con'||key=='n'||key=='t')){
         base += (key=='id') ? ' '+key+'="'+val+inc()+'"' : 
           ' '+key+'="'+val+'"' ;
       }
-    });
-    
+    });// end $.map()
+
     base += blob.tail;
     base += (kk.con) ? ''+kk.con+'' : '';
     // Now it gets hairy..
