@@ -1,15 +1,15 @@
 // Replace any nasty characters with safe alternatives
 // or just a blank string
 function escapeText(s){
-  if(!s){return "";}
-  s += "";
+  if(!s){return '';}
+  s += '';
   return s.replace(/[\n\r\t'"<>&]/g, function(s){
-      switch(s){case"\n":case"\r":case"\t":return"";
-        case"'":return"&#039";
-        case"\"":return"&quot";
-        case"<":return"&lt";
-        case">":return"&gt";
-        case"&":return"&amp";
+      switch(s){case'\n':case'\r':case'\t':return'';
+        case'\'':return'&#039';
+        case'"':return'&quot';
+        case'<':return'&lt';
+        case'>':return'&gt';
+        case'&':return'&amp';
       }});}
 
 // Tag identifier and bits
@@ -70,7 +70,7 @@ function recursiveOptions(obj,dd){
     });// end $.map()
 
     base += blob.tail;
-    base += (kk.con) ? ''+kk.con+'' : '';
+    base += (kk.con) ? ''+escapeText(kk.con) : '';
     // Now it gets hairy..
     base += (kk.n) ? recursiveOptions(kk.n,dd) : '';
     base += blob.end;
