@@ -14,9 +14,9 @@ The engine works like this:
  
  The object of objects take the form of ``var temp = {_id:true,temp:[{'t':'','id':'',...},{...}]}`` etc...
  
- The ```javascript _id:true``` property will append sequential numbers to the tag id's when set to true. This would ensure the first tag met with an ID will have a ONE appended to the ID attribute value.. id="someID1", followed by id="someID2" on the next tag id met by the engine.
+ The ```_id:true``` property will append sequential numbers to the tag id's when set to true. This would ensure the first tag met with an ID will have a ONE appended to the ID attribute value.. id="someID1", followed by id="someID2" on the next tag id met by the engine.
  
- The ```javascript t:``` property in each object is mandatory as it identifies the tag to be used during the build.
+ The ```t:``` property in each object is mandatory as it identifies the tag to be used during the build.
  An id, while not mandatory, is the best way to mark tags for JQuery manipulation or for CSS.
  
  The ```con:``` property can contain content for the given tag.. set between the opening and closing tags.
