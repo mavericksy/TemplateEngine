@@ -12,7 +12,7 @@ The engine works like this:
  A variable holding an object with a temp property filled with objects that represent HTML tags, 
  is fed to a recursive function that builds the html tags and nests the relevant children.
  
- The object of objects take the form of ``var temp = {_id:true,temp:[{'t':'','id':'',...},{...}]}`` etc...
+ The object of objects take the form of ``var temp = {_id:true,temp:[{'t':'p','id':'',...},{...}]}`` etc...
  
  The ```_id:true``` property will append sequential numbers to the tag id's when set to true. This would ensure the first tag met with an ID will have a ONE appended to the ID attribute value.. id="someID1", followed by id="someID2" on the next tag id met by the engine.
  
@@ -33,7 +33,7 @@ The engine works like this:
               {"t":"i","type":"button","id":"HELLO","class":"HELLO","value":"HELLO"}
             ]};
             
- TemplateEngine(code, temp);
+ TemplateEngine(temp);
  => Output: <input type="button" id="HELLO1" class="HELLO" value="HELLO">
 
 
@@ -51,7 +51,7 @@ var template = {
   ]
 };
 
-TemplateEngine(code, template);
+TemplateEngine(template);
 => Output: 
 <div id="div1">This is div1
   <form id="form2">
